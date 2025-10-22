@@ -1,43 +1,35 @@
-const { supabase } = require("../config/db");
+import { supabase } from "../config/db.js";
 
-// GET all items
-const getAllItems = async (status) => {
+// 🔹 Ambil semua data (bisa pakai filter status)
+export const getAllItems = async (status) => {
   let query = supabase.from("items").select("*");
-
   if (status) query = query.eq("status", status);
 
   const { data, error } = await query;
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return data;
 };
 
-// ADD item
-const addItem = async (newItem) => {
-  const { error } = await supabase.from("items").insert([{
-    nama: newItem.nama,
-    status: newItem.status,
-    tanggal_masuk: newItem.tanggalMasuk,
-    tanggal_selesai: newItem.tanggalSelesai,
-  }]);
-  if (error) throw error;
+// 🔹 Tambah item baru
+export const addItem = async (item) => {
+  const { data, error } = await supabase.from("items").insert([item]);
+  if (error) throw new Error(error.message);
+  return data;
 };
 
-// UPDATE item
-const updateItem = async (id, updatedData) => {
-  const { error } = await supabase
+// 🔹 Update item berdasarkan ID
+export const updateItem = async (id, updatedData) => {
+  const { data, error } = await supabase
     .from("items")
-    .update({
-      status: updatedData.status,
-      tanggal_selesai: updatedData.tanggalSelesai,
-    })
+    .update(updatedData)
     .eq("id", id);
-  if (error) throw error;
+  if (error) throw new Error(error.message);
+  return data;
 };
 
-// DELETE item
-const deleteItem = async (id) => {
-  const { error } = await supabase.from("items").delete().eq("id", id);
-  if (error) throw error;
+// 🔹 Hapus item berdasarkan ID
+export const deleteItem = async (id) => {
+  const { data, error } = await supabase.from("items").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+  return data;
 };
-
-module.exports = { getAllItems, addItem, updateItem, deleteItem };
