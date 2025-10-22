@@ -20,7 +20,7 @@ const getItems = async (req, res) => {
 const createItem = async (req, res) => {
   try {
     await addItem(req.body);
-    res.json({ message: "Data sepatu berhasil ditambahkan." });
+    res.json({ message: "Data sepatu berhasil ditambah ke database." });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -30,7 +30,7 @@ const createItem = async (req, res) => {
 const editItem = async (req, res) => {
   try {
     await updateItem(req.params.id, req.body);
-    res.json({ message: "Status sepatu berhasil diperbarui." });
+    res.json({ message: "Berhasil memperbarui status pengerjaan sepatu." });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
